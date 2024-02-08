@@ -1,0 +1,63 @@
+<div class="container">
+    <button routerLink="/rubros"
+        class="buttonAdd btn btn-primary buttonAgregar">Volver</button>
+    <br>
+    <h3 class="mt-3">Agregar un Rubro</h3>
+    <hr>
+    <ng-template #longContent let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Se dio de alta correctamente un rubro </b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+    </ng-template>
+
+    <form #myForm="ngForm" (ngSubmit)="enviar(myForm,longContent)">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <br>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="nombre"
+                        [(ngModel)]="nombre"
+                        (ngModelChange)="nombreChange($event)"
+                        placeholder="Nombre del rubro">
+                    <small class="text-danger"
+                        *ngIf="nombreInvalido">El nombre de rubro debe ser mayor
+                        a 4 caracteres</small>
+                </div>
+                <br>
+
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">&nbsp;</label>
+                    <div class="input-group col-md-8">
+                        <button type="submit"
+                            class="btn btn-outline-primary mr-2">
+                            Enviar
+                        </button>
+                        <button type="button"
+                            class="btn btn-outline-danger"
+                            (click)="limpiar()">
+                            Limpiar
+                        </button>
+                    </div>
+                    <small class="text-danger"
+                        *ngIf="editarInvalido">¡Complete el campo nombre,
+                        para agregar un rubro correctamente!</small>
+                    <!--<p *ngIf="editarInvalido" class="text-danger mt-3">No se puede editar un
+            producto, si no realiza ningún cambio</p>-->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

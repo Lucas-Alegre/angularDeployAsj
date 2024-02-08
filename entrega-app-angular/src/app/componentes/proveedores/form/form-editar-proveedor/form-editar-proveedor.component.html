@@ -1,0 +1,360 @@
+<div class="container">
+    <button routerLink="/proveedores"
+        class="buttonAdd btn btn-primary buttonAgregar">Volver</button>
+    <br>
+    <h3 class="mt-3">Editar un proveedor</h3>
+    <hr>
+
+    <ng-template #longContent let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Se modifico correctamente un proveedor </b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+    <form [formGroup]="form" (ngSubmit)="guardar(longContent)">
+        <div class="row">
+            <div class="col-4">
+                <div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text"
+                                class="form-control"
+                                id="codigoProveedor"
+                                name="codigoProveedor"
+                                [disabled]="true"
+                                formControlName="codigoForm"
+                                [class.is-invalid]="codigoProveedorValido"
+                                placeholder="Codigo del Proveedor">
+                            <small *ngIf="codigoProveedorValido"
+                                class="text-danger">Ingrese un
+                                codigo minimo de 4 digitos. </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text"
+                                class="form-control"
+                                id="razonSocial"
+                                name="razonSocial"
+                                formControlName="razonSocialForm"
+                                [class.is-invalid]="razonSocialValida"
+                                placeholder="Razon Social">
+                            <small *ngIf="razonSocialValida"
+                                class="text-danger">Ingrese una Razon Social
+                                valido. </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <select type="text"
+                                class="form-control custom-select"
+                                id="rubro"
+                                name="rubro"
+                                formControlName="rubroForm"
+                                [class.is-invalid]="rubroValido"
+                                placeholder="Seleccione un Rubro">
+                                <option value disabled>Seleccione el
+                                    Rubro</option>
+                                <option value={{item.nombre}}
+                                    *ngFor="let item of listaRubros">{{item.nombre}}</option>
+                            </select>
+                            <small *ngIf="rubroValido"
+                                class="text-danger">Ingrese un
+                                rubro</small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="text"
+                                class="form-control"
+                                id="sitioWeb"
+                                name="sitioWeb"
+                                formControlName="sitioWebForm"
+                                [class.is-invalid]="sitioWebValido"
+                                placeholder="Sitio Web">
+                            <small *ngIf="sitioWebValido"
+                                class="text-danger">Ingrese un sitio web.
+                            </small>
+                            <small *ngIf="sitioWebValido2"
+                                class="text-danger">Ingrese un sitio web valido
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <select type="text"
+                                class="form-control custom-select"
+                                id="condicionIva"
+                                name="condicionIva"
+                                formControlName="condicionIvaForm"
+                                [class.is-invalid]="condicionIvaValido"
+                                placeholder="Seleccione su condición">
+                                <option value disabled>Seleccione su
+                                    condición</option>
+                                <option value={{item.condNombre}}
+                                    *ngFor="let item of listaCondicionIva">{{item.condNombre}}</option>
+                            </select>
+                            <small *ngIf="condicionIvaValido"
+                                class="text-danger">Ingrese una condición de
+                                IVA</small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="text"
+                                class="form-control"
+                                id="imagen"
+                                name="imagen"
+                                formControlName="imagenForm"
+                                [class.is-invalid]="imagenValida"
+                                placeholder="Url Imagen Logo">
+                            <small *ngIf="imagenValida" class="text-danger">La
+                                imagen
+                                es requerida. </small>
+                            <small *ngIf="imagenValidaFormato"
+                                class="text-danger">La imagen
+                                debe tener un formato valido</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <select type="text"
+                                class="form-control custom-select"
+                                id="pais"
+                                name="pais"
+                                formControlName="paisForm"
+                                [class.is-invalid]="paisValido"
+                                placeholder="Seleccione un Pais">
+                                <option value disabled>Seleccione el
+                                    pais</option>
+                                <option value={{item.nombre}}
+                                    *ngFor="let item of listaPaises">{{item.nombre}}</option>
+                            </select>
+                            <small *ngIf="paisValido"
+                                class="text-danger">Ingrese un
+                                Pais</small>
+                            <small *ngIf="paisValido2"
+                                class="text-danger">Ingrese un pais sin números.
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <select type="text"
+                                class="form-control custom-select"
+                                id="provincia"
+                                name="provincia"
+                                formControlName="provinciaForm"
+                                [class.is-invalid]="provinciaValida"
+                                placeholder="Ingresa">
+
+                                <option value disabled>Seleccione la
+                                    provincia</option>
+                                <option value={{item.nombre}}
+                                    *ngFor="let item of listaProvincias">{{item.nombre}}</option>
+                            </select>
+                            <small *ngIf="provinciaValida"
+                                class="text-danger">Ingrese un
+                                Provincia</small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text"
+                                class="form-control custom-select"
+                                id="localidad"
+                                name="localidad"
+                                formControlName="localidadForm"
+                                [class.is-invalid]="localidadValida"
+                                placeholder="Localidad">
+                            <small *ngIf="localidadValida"
+                                class="text-danger">Ingrese una
+                                localidad.</small>
+                            <small *ngIf="localidadValida2"
+                                class="text-danger">Ingrese una localidad.
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="text"
+                                class="form-control"
+                                id="calle"
+                                name="calle"
+                                formControlName="calleForm"
+                                [class.is-invalid]="calleValida"
+                                placeholder="Nombre de Calle">
+                            <small *ngIf="calleValida"
+                                class="text-danger">Ingrese un nombre de calle
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="number"
+                                class="form-control"
+                                id="numeroCalle"
+                                name="numeroCalle"
+                                formControlName="numeroCalleForm"
+                                [class.is-invalid]="numeroCalleValido"
+                                placeholder="Número de calle">
+                            <small *ngIf="numeroCalleValido"
+                                class="text-danger">Ingrese un numero de
+                                calle. </small>
+                            <small *ngIf="numeroCalleValido2"
+                                class="text-danger">Ingrese un numero de
+                                calle mayor a 0. </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="number"
+                                class="form-control"
+                                id="codigoPostal"
+                                name="codigoPostal"
+                                formControlName="codigoPostalForm"
+                                [class.is-invalid]="codigoPostalValido"
+                                placeholder="Codigo Postal">
+                            <small *ngIf="codigoPostalValido"
+                                class="text-danger">Ingrese un codigo postal.
+                            </small>
+                            <small *ngIf="codigoPostalValido2"
+                                class="text-danger">Ingrese un codigo postal
+                                mayor a 0.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text"
+                                class="form-control"
+                                id="cuit"
+                                name="cuit"
+                                formControlName="cuitForm"
+                                [class.is-invalid]="cuitValido"
+                                placeholder="Cuit">
+                            <small *ngIf="cuitValido"
+                                class="text-danger">Ingrese un cuit. </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="number"
+                                class="form-control"
+                                id="telefono"
+                                name="telefono"
+                                formControlName="telefonoForm"
+                                [class.is-invalid]="telefonoValido"
+                                placeholder="Telefono">
+                            <small *ngIf="telefonoValido"
+                                class="text-danger">Ingrese un numero de
+                                telefono valido </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="email"
+                                class="form-control"
+                                id="email"
+                                name="email"
+                                formControlName="emailForm"
+                                [class.is-invalid]="emailValido"
+                                placeholder="Email">
+                            <small *ngIf="emailValido"
+                                class="text-danger">Este campo es requerido.
+                            </small>
+                            <small *ngIf="emailValido2"
+                                class="text-danger">Ingrese un email valido.
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="text"
+                                class="form-control"
+                                id="nombre"
+                                name="nombre"
+                                formControlName="nombreForm"
+                                [class.is-invalid]="nombreValido"
+                                placeholder="Nombre completo">
+                            <small *ngIf="nombreValido"
+                                class="text-danger">Ingrese un nombre. </small>
+                            <small *ngIf="nombreValido2"
+                                class="text-danger">Ingrese un nombre sin
+                                números. </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="text"
+                                class="form-control custom-select"
+                                id="rol"
+                                name="rol"
+                                formControlName="rolForm"
+                                [class.is-invalid]="rolValido"
+                                placeholder="Seleccione el rol">
+                            <small *ngIf="rolValido"
+                                class="text-danger">Ingrese un rol</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="form-group row">
+            <label class="col-2 col-form-label">&nbsp;</label>
+            <div class="input-group col-md-8">
+                <button type="submit"
+                    class="btn btn-outline-primary mr-2">
+                    Enviar
+                </button>
+                <button *ngIf="!formInvalido" type="button" disabled
+                    class="btn btn-outline-danger"
+                    (click)="limpiar()">
+                    Limpiar
+                </button>
+                <button *ngIf="formInvalido" type="button"
+                    class="btn btn-outline-danger"
+                    (click)="limpiar()">
+                    Limpiar
+                </button>
+            </div>
+            <p *ngIf="editarInvalido" class="text-danger mt-3">No se puede
+                editar un
+                proveedor, si no realiza ningún cambio</p>
+        </div>
+    </form>
+</div>

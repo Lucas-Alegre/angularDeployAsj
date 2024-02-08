@@ -1,0 +1,196 @@
+<div class="container">
+    <h1 class="h2">Gestión de proveedores</h1>
+    <button routerLink="/agregar-proveedor"
+        class="buttonAdd btn btn-primary buttonAgregar">Agregar
+        proveedor
+    </button>
+    <br>
+    <!-- DESDE ACA-->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <input [(ngModel)]='textoDeInput'
+                class="form-control"
+                width="400px"
+                placeholder="Buscar"
+                name="textoDeInput"
+                type="text"
+                (keyup)="onKeyUp($event)">
+        </div>
+
+        <select class="form-select w-25"
+            (change)="filtrarRubro($event)">
+            <option value="todos">Todos</option>
+            <option [value]="rubro.nombre"
+                *ngFor="let rubro of listaRubros">{{rubro.nombre}}</option>
+        </select>
+
+        <div *ngIf="estaEnAltas">
+            <button class="btn btn-success" type="submit"
+                (click)="proveedoresAlta()">Ver dados de Alta</button>
+        </div>
+        <div *ngIf="estaEnBajas">
+            <button class="btn btn-danger" type="submit"
+                (click)="proveedoresbaja()">Ver dados de Baja</button>
+
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+
+    <ng-template #longContent let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">{{proveedorDetail.nombreProveedor}}</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <h4>Logo</h4>
+            <img src="{{proveedorDetail.imagen}}"
+                alt="Imagen producto"
+                class="align-center"
+                width="130"
+                height="150px">
+            <br>
+            <h4>Codigo del proveedor</h4>
+            <p> {{proveedorDetail.codigo}}
+            </p><br>
+            <h4>Rubro al cual pertenece</h4>
+            <p>
+                {{proveedorDetail.rubro.nombre}}
+            </p><br>
+            <h4>Sitio Web</h4>
+            <p>
+                <a
+                    href="{{proveedorDetail.sitioWeb}}">{{proveedorDetail.sitioWeb}}</a>
+            </p>
+            <h4>Condicion de Iva</h4>
+            <p>
+                {{proveedorDetail.condIva.condNombre}}
+            </p><br>
+            <h4>Email</h4>
+            <p>
+                <a
+                    href="mailto:{{proveedorDetail.contactos.email}}">{{proveedorDetail.contactos.email}}</a>
+
+            </p><br>
+            <h4>Telefono</h4>
+            <p>
+                {{proveedorDetail.telefono}}
+            </p>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+
+    <ng-template #longContentBaja let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Un proveedor fue dado de baja correctamente</b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+
+    <ng-template #longContentAlta let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Un proveedor fue dado de alta correctamente</b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+    <!-- Modal -->
+
+    <br>
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Codigo</th>
+                <th>Razón Social</th>
+                <th>Ubicación</th>
+                <th>Datos de Contactos</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let proveedor of listaproveedorAux; index as i">
+            <tr>
+                <td [ngClass]="{'deleted': proveedor.deleteAt==0}">
+                    <img
+                        src="{{proveedor.imagen}}"
+                        [alt] width="80"
+                        height="75px"
+                        class="shadow-4" />
+                </td>
+                <td>{{ proveedor.codigo }}</td>
+                <td>{{ proveedor.razonSocial }}</td>
+                <td>
+                    {{ proveedor.direc.provincia.nombre }},
+                    {{ proveedor.direc.provincia.pais.nombre }}
+                </td>
+                <td>
+                    <button type="button" class="btn" placement="top"
+                        ngbTooltip="{{ proveedor.sitioWeb}} {{ proveedor.contactos.email }} {{ proveedor.telefono}}">
+                        <i class="bi bi-arrow-up-circle-fill"></i>
+                    </button>
+                    {{ proveedor.nombreProveedor }}
+                </td>
+                <td *ngIf="estaEnBajas"
+                    [ngClass]="{'deleted': proveedor.deleteAt==1}"
+                    class="editarEliminar">
+                    <button class="btn button btn-outline-primary"
+                        (click)="openScrollableContent(longContent,proveedor.id)">Ver
+                        mas</button>
+                    <button
+                        class="btn button btn-warning"
+                        [routerLink]="['/editar-proveedor', proveedor.id]">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button
+                        class="btn button btn-danger"
+                        (click)="eliminar(proveedor, longContentBaja)">
+                        <i class="bi bi-trash3-fill"></i>
+                    </button>
+                </td>
+
+                <td *ngIf="estaEnAltas"
+                    class="editarEliminar">
+                    <button
+                        class="btn button btn-success"
+                        (click)="darDeAlta(proveedor, longContentAlta)">Dar de
+                        alta</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="existenProveedor" class="alert alert-primary text-center"
+        role="alert">
+        No hay proveedores!
+    </div>
+</div>

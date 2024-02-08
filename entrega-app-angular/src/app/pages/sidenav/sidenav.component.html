@@ -1,0 +1,44 @@
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
+    <div class="logo-container">
+        <button class="logo" (click)="toggleCollapse()">X</button>
+        <div class="logo-text" @fadeInOut *ngIf="collapsed">Ecomerce</div>
+    </div>
+    <ul class="sidenav-nav ">
+        <li class="sidenav-nav-item " *ngFor="let data of navData">
+            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="sidenav-link-icon" [class]="data.icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                    {{data.label}}
+                </span>
+            </a>
+        </li>
+        <span class="bordebuttonlista">
+            -
+        </span>
+        <hr>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" routerLink="/categorias"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="sidenav-link-icon bi bi-tags"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                    Categoria
+                </span>
+            </a>
+        </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" routerLink="/rubros"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="sidenav-link-icon bi bi-bookmarks"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                    Rubros
+                </span>
+            </a>
+        </li>
+        <button class="btn btn-outline-info" (click)="salir()">salir</button>
+
+    </ul>
+</div>

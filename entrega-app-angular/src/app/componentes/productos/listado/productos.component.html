@@ -1,0 +1,178 @@
+<div class="container">
+    <h1 class="h2">Gestión de productos</h1>
+    <button routerLink="/agregar-producto"
+        class="buttonAdd btn btn-primary buttonAgregar">Agregar
+        productos</button>
+    <br>
+    <!-- DESDE ACA-->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <input [(ngModel)]='textoDeInput'
+                class="form-control"
+                width="400px"
+                placeholder="Buscar"
+                name="textoDeInput"
+                type="text"
+                (keyup)="onKeyUp($event)">
+        </div>
+
+        <select class="form-select w-25"
+            (change)="filtrarCategoria($event)">
+            <option value="todos">Todos</option>
+            <option [value]="cat.nombre"
+                *ngFor="let cat of listaCategorias">{{cat.nombre}}</option>
+        </select>
+
+        <div *ngIf="estaEnAltas">
+            <button class="btn btn-success" type="submit"
+                (click)="productosAlta()">Ver dados de Alta</button>
+        </div>
+        <div *ngIf="estaEnBajas">
+            <button class="btn btn-danger" type="submit"
+                (click)="productosbaja()">Ver dados de Baja</button>
+
+        </div>
+    </div>
+
+    <!-- HASTA ACA-->
+    <!-- Button trigger modal -->
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+
+    <ng-template #longContent let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">{{productDetail.nombreProducto}}</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+
+            <img src="{{productDetail.imagen}}"
+                alt="Imagen producto"
+                class="align-center"
+                width="130"
+                height="150px">
+            <p><b>Descripción : </b>
+                {{productDetail.descripcion}}
+            </p>
+            <p><b>Categoria :</b>
+                {{productDetail.categoria.nombre}}
+            </p>
+            <p><b>Proveedor :</b>
+                {{productDetail.proveedorId.nombreProveedor}}
+            </p>
+            <p><b>Precio :U$S </b>
+                {{productDetail.precio}}
+            </p>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+
+    <ng-template #longContentBaja let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Se dio de baja correctamente un producto </b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+
+    <ng-template #longContentAlta let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Se dio de alta correctamente un producto </b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+    <!-- Modal -->
+
+    <br>
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Codigo SKU</th>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Razon Sociál</th>
+                <th>Precio</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let product of productosAux; index as i">
+            <tr [ngClass]="{'deleted': product.habilitado==0}">
+                <td [ngClass]="{'deleted': product.habilitado==0}">
+                    <img
+                        src="{{product.imagen}}"
+                        [alt]="product.nameProducto" width="80"
+                        height="75px"
+                        class="shadow-4" />
+                </td>
+                <td [ngClass]="{'deleted': product.habilitado==0}">{{
+                    product.codigoSKU }}</td>
+                <td [ngClass]="{'deleted': product.habilitado==0}">{{
+                    product.nombreProducto }}</td>
+                <td v>{{ product.categoria.nombre }}</td>
+                <td
+                    [ngClass]="{'deleted': product.habilitado==0}">{{product.proveedorId.razonSocial}}</td>
+                <td [ngClass]="{'deleted': product.habilitado==0}">{{
+                    product.precio | currency:'U$S ' }}</td>
+                <td *ngIf="estaEnBajas"
+                    [ngClass]="{'deleted': product.habilitado==0}"
+                    class="editarEliminar">
+                    <button class="btn button  btn-outline-primary mb-2 me-2"
+                        (click)="openScrollableContent(longContent,product.id)">Ver
+                        mas</button>
+                    <button
+                        class="btn button btn-warning"
+                        [routerLink]="['/editar-producto', product.id]"><i
+                            class="bi bi-pencil-fill"></i></button>
+                    <button
+                        class="btn button btn-danger"
+                        (click)="eliminar(product, longContentBaja)"><i
+                            class="bi bi-trash3-fill"></i></button>
+
+                </td>
+
+                <td *ngIf="estaEnAltas"
+                    class="editarEliminar">
+                    <button
+                        class="btn button btn-success"
+                        (click)="darDeAlta(product, longContentAlta)">Dar de
+                        alta</button>
+
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="noExistenProductos" class="alert alert-primary text-center"
+        role="alert">
+        No hay productos.
+    </div>
+</div>

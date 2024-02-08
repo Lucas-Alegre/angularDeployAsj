@@ -1,0 +1,60 @@
+<div class="container">
+    <h1 class="h2">Gestión de categorias</h1>
+    <button routerLink="/agregar-categoria"
+        class="buttonAdd btn btn-primary buttonAgregar">Agregar
+        categorias</button>
+    <br>
+
+    <ng-template #longContentBaja let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Se dio de baja correctamente una categoria </b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+
+    <!-- Modal -->
+
+    <br>
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let categoria of categoriaAux">
+                <td>{{categoria.id}}</td>
+                <td>{{categoria.nombre}}</td>
+                <td>
+                    <button
+                        [routerLink]="['/editar-categoria', categoria.id]"
+                        class="btn button btn-warning"><i
+                            class="bi bi-pencil-fill"></i></button>
+                    <button
+                        class="btn button btn-danger"
+                        (click)="eliminar(categoria, longContentBaja)"><i
+                            class="bi bi-trash3-fill"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div
+        *ngIf="noExistenCategorias"
+        class="alert alert-primary text-center"
+        role="alert">
+        No hay categorias.
+    </div>
+</div>

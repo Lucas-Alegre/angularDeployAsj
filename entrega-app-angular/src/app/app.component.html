@@ -1,0 +1,10 @@
+<div *ngIf="logeadoCorrecto">
+    <app-sidenav (enviar)="salir($event)" (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
+    <app-body
+        [collapsed]="isSideNavCollapsed"
+        [screenWidth]="screenWidth"></app-body>
+</div>
+
+<div *ngIf="logeadoInCorrecto">
+    <app-login (enviar)="recibirMensaje($event)"></app-login>
+</div>

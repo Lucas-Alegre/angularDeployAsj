@@ -1,0 +1,33 @@
+
+<body>
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form>
+                <label for="chk" aria-hidden="true">Sign up</label>
+                <input type="text" name="nameUser" placeholder="Name of user" [(ngModel)]="signupObj.nameUser">
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="signupObj.email">
+                <input type="password" name="pasword" placeholder="Password"
+                    [(ngModel)]="signupObj.password"
+                    required>
+                <button (click)="onSignUp()">Sign up</button>
+            </form>
+        </div>
+
+        <div class="login">
+            <form>
+                <label for="chk" aria-hidden="true">Login</label>
+                <input type="text" name="email" placeholder="Email"
+                    [(ngModel)]="loginObj.email">
+                <input type="password" name="pswd" placeholder="Password"
+                    [(ngModel)]="loginObj.password"
+                    required>
+                <button (click)="onLogin()">Login</button>
+                <small class="text-danger text-center noFound"
+                *ngIf="usuarionoEncontrado">Este usuario no existe.</small>
+            </form>
+            
+        </div>
+    </div>
+</body>

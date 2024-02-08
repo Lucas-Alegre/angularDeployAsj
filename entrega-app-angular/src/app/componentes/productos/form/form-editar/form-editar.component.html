@@ -1,0 +1,176 @@
+<div class="container">
+  <button routerLink="/productos"
+    class="buttonAdd btn btn-primary buttonAgregar">Volver</button>
+  <br>
+  <h3 class="mt-3">Editar el producto de codigo:
+    <small class="text-success"> {{producto.codigoSKU}}</small></h3>
+  <hr>
+
+  <ng-template #longContent let-modal>
+
+    <div class="modal-header">
+      <h4 class="modal-title">Notificación</h4>
+      <button type="button" class="btn-close" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p><b>Se modifico correctamente  un producto </b></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary"
+        (click)="modal.close('Close click')">Close</button>
+    </div>
+
+  </ng-template>
+
+  <form #myForm="ngForm" (ngSubmit)="enviar(myForm, longContent)">
+    <div class="row">
+      <div class="col-6">
+        <div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">SKU</label>
+            <div class="col-8">
+              <input type="text"
+                class="form-control"
+                id="codigoSku"
+                name="codigoSku"
+                disabled
+                [(ngModel)]="codigoSku"
+                (ngModelChange)="cambiaEstadoValidado($event)">
+              <small class="text-danger"
+                *ngIf="codigoSkuvalidado">El codigo Sku es requerido.</small>
+              <small class="text-danger"
+                *ngIf="codigoSkuRepetidovalidado">Este codigo ya existe. Por
+                favor ingese uno diferente.</small>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">Producto</label>
+            <div class="col-8">
+              <input type="text"
+                class="form-control"
+                id="nombreProducto"
+                name="nombreProducto"
+                placeholder="Nombre del producto"
+                [(ngModel)]="nombreProducto"
+                (ngModelChange)="cambiaNombreProductoValidado($event)">
+              <small class="text-danger"
+                *ngIf="nombreProductoValido">Nombre de Producto
+                es requerido con mayor a 3 digitos.</small>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">Proveedor</label>
+            <div class="col-8">
+              <select type="text"
+                class="form-control custom-select"
+                id="proveedor"
+                name="proveedor"
+                placeholder="Proveedor"
+                [(ngModel)]="proveedor"
+                (ngModelChange)="cambiaProveedorValidado($event)">
+                <option value disabled>Seleccione una Proveedor</option>
+                <option value={{item.nombreProveedor}}
+                  *ngFor="let item of listadoProveedores">{{item.nombreProveedor}}</option>
+              </select>
+              <small class="text-danger"
+                *ngIf="nombreProveedorValido">Proveedor
+                es requerida.</small>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">Categoría</label>
+            <div class="col-md-8">
+              <select type="text"
+                class="form-control custom-select"
+                id="categoria"
+                name="categoria"
+                [(ngModel)]="categoria"
+                (ngModelChange)="cambiaCategoriaValidado($event)">
+                <option value disabled>Seleccione una categoría</option>
+                <option value={{item.nombre}}
+                  *ngFor="let item of listaCategorias">{{item.nombre}}</option>
+              </select>
+              <small class="text-danger"
+                *ngIf="nombreCategoriaValido">Categoria
+                es requerido.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">Imagen</label>
+            <div class="col-md-8">
+              <input type="text"
+                class="form-control"
+                id="imagen"
+                name="imagen"
+                placeholder="Imagen"
+                [(ngModel)]="imagen"
+                (ngModelChange)="cambiaImagenValidado($event)">
+              <small class="text-danger"
+                *ngIf="nombreImagenValido">La imagen es requerid con su formato
+                url + png, jpg, jpeg, webp.</small>
+              <small class="text-danger"
+                *ngIf="nombreLengthImagenValido">La imagen es requerida.</small>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">Descripción</label>
+            <div class="col-md-8">
+              <input type="text"
+                class="form-control"
+                id="descripcion"
+                name="descripcion"
+                placeholder="Descripción"
+                [(ngModel)]="descripcion"
+                (ngModelChange)="cambiaNombreDescripcionValidado($event)">
+              <small class="text-danger"
+                *ngIf="nombreDescripcionValido">Descripción
+                es requerida con mayor a 10 caracteres.</small>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label class="col-2 col-form-label">Precio</label>
+            <div class="col-md-8">
+              <input type="number"
+                class="form-control"
+                id="precio"
+                name="precio"
+                placeholder="Precio"
+                [(ngModel)]="precio"
+                (ngModelChange)="cambiaNombrePrecioValidado($event)">
+              <small class="text-danger"
+                *ngIf="nombrePrecioValido">Precio
+                es requerido y mayor a 0.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <label class="col-2 col-form-label">&nbsp;</label>
+      <div class="input-group col-md-8">
+        <button type="submit"
+          class="btn btn-outline-primary mr-2">
+          Enviar
+        </button>
+        <button type="button"
+          class="btn btn-outline-danger"
+          (click)="limpiar()">
+          Limpiar
+        </button>
+      </div>
+      <p *ngIf="editarInvalido" class="text-danger mt-3">No se puede editar un
+        producto, si no realiza ningún cambio</p>
+    </div>
+  </form>
+</div>

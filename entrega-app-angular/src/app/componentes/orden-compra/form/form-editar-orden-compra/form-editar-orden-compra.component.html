@@ -1,0 +1,212 @@
+
+<div class="container">
+    <h1 class="h2">Agregar una orden de compra</h1>
+    <button routerLink="/orden-compra"
+        class="buttonAdd btn btn-primary buttonAgregar">Volver</button>
+    <br>
+    <ng-template #longContent let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title">Notificación</h4>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Se dio de alta correctamente una orden de Compra </b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                (click)="modal.close('Close click')">Close</button>
+        </div>
+
+    </ng-template>
+    <form #myForm="ngForm" (ngSubmit)="enviar(myForm,longContent)">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Numero de Orden</label>
+                    <input type="text"
+                        class="form-control"
+                        id="numeroOrden"
+                        name="numeroOrden"
+                        [(ngModel)]="numeroOrden"
+                        disabled
+                        placeholder="Numero de Orden">
+                    <small class="text-danger"
+                        *ngIf="numeroOrdenInvalido">El numero de orden es
+                        requerido y tiene un mínimo de 3 caracteres.</small>
+                    <small class="text-danger"
+                        *ngIf="ordenRepetida">Esta orden ya existe.</small>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Fecha De Entrega</label>
+                    <input type="date"
+                        class="form-control"
+                        id="fechaEntrega"
+                        name="fechaEntrega"
+                        [(ngModel)]="fechaEntrega"
+                        placeholder="Fecha De Entrega">
+                    <small class="text-danger"
+                        *ngIf="fechaInvalido">La fecha es requerida, y debe ser
+                        luego del dia actual.</small>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Direccion, y numero de calle</label>
+                    <input type="text"
+                        class="form-control"
+                        id="direccion"
+                        name="direccion"
+                        [(ngModel)]="direccion"
+                        (ngModelChange)="direccionChange($event)"
+                        placeholder="Ingrese su direccion y numero de calle">
+                    <small class="text-danger"
+                        *ngIf="direccionInvalida">La dirección
+                        requerida con un mínimo de 5 caracteres.</small>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Proveedor</label>
+                    <select type="text"
+                        class="form-control custom-select"
+                        id="proveedor"
+                        name="proveedor"
+                        placeholder="Proveedor"
+                        [(ngModel)]="proveedor"
+                        (ngModelChange)="proveedorChange($event)">
+                        <option value disabled>Seleccione un proveedor</option>
+                        <option value={{item.nombreProveedor}}
+                            *ngFor="let item of listadoProveedores">{{item.nombreProveedor}}</option>
+                    </select>
+                    <small class="text-danger"
+                        *ngIf="proveedorInvalido">Debe seleccionar un
+                        proveedor.</small>
+                    <div class="logo">
+                        <div>
+                            <img src="{{imagenLogo}}"
+                                alt="Imagen producto"
+                                class="align-center"
+                                width="130"
+                                height="150px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Información de
+                        recepción. Ubicación y dirección</label>
+                    <textarea
+                        id="w3review"
+                        name="w3review"
+                        rows="4"
+                        cols="75%"
+                        placeholder="Ingrese su ubicación y direccion"
+                        [(ngModel)]="informacionRecepcion"
+                        (ngModelChange)="informacionDireccionChange($event)">
+                        
+                    </textarea>
+                    <small class="text-danger"
+                        *ngIf="informacionRecepcionInvalida">Debe agregar una
+                        descripción de su ubicación con un mínimo de 15
+                        caracteres.</small>
+                </div>
+
+            </div>
+
+        </div>
+        <br><br>
+        <br><hr>
+        <div class="row m-5">
+            <div class="col">
+                <select type="text"
+                    class="form-control custom-select"
+                    id="producto"
+                    name="producto"
+                    required
+                    [(ngModel)]="producto"
+                    placeholder="Producto">
+                    <option value disabled>Seleccione un producto</option>
+                    <option value={{item.nombreProducto}}
+                        *ngFor="let item of listadoProductos">{{item.nombreProducto}}</option>
+                </select>
+
+            </div>
+            <div class="col">
+                <input type="number"
+                    class="form-control"
+                    id="cantidad"
+                    name="cantidad"
+                    [(ngModel)]="cantidad"
+                    (ngModelChange)="cantidadChange($event)"
+                    placeholder="Cantidad">
+                <small class="text-danger"
+                    *ngIf="cantidadInvalida">Debe agregar una
+                    cantidad mayor a 0.</small>
+            </div>
+            <div class="col text-center">
+                <button type="button" (click)="AgregarProducto()"
+                    class="btn btn-success">Agregar</button>
+                <button type="button" (click)="limpiar()"
+                    class="btn btn-danger">Limpiar</button>
+            </div><br><br><br>
+            <table class="table table-hover">
+                <small class="text-danger"
+                    *ngIf="productosInvalidos">Debe agregar un producto.</small>
+                <thead>
+                    <tr>
+                        <th>Codigo sku</th>
+                        <th>Nombre de producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio/unidad</th>
+                        <th>Precio Total</th>
+                    </tr>
+                </thead>
+
+                <tbody *ngFor="let detalle of listProductTable; index as i">
+                    <tr>
+                        <td>{{detalle.productosId.codigoSKU}}</td>
+                        <td>{{detalle.productosId.nombreProducto}}</td>
+                        <td>{{detalle.detalleCantidad}}</td>
+                        <td>${{detalle.productosId.precio}}</td>
+                        <td>${{detalle.detalleCantidad*detalle.productosId.precio}}</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+            <br>
+            <h4 class="text-success">TOTAL: {{suma}}</h4>
+            <div *ngIf="noContieneProductos"
+                class="alert alert-primary text-center"
+                role="alert">
+                No hay productos en la orden. Por favor, agrege uno.
+            </div>
+        </div><hr>
+        <p *ngIf="botondisable" class="text-danger mt-3">No se agregar una orden
+            si no realiza ningún cambio</p>
+        <br>
+        <div class="input-group col-md-8">
+            <button
+                type="submit"
+                class="btn btn-outline-primary mr-2">
+                Enviar
+            </button>
+            <button type="button"
+                class="btn btn-outline-danger"
+                (click)="limpiar()">
+                Limpiar
+            </button> <br>
+        </div>
+
+        <!-- Otros campos del formulario -->
+    </form>
+</div>
+<br><br>
